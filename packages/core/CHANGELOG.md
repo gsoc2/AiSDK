@@ -1,5 +1,12 @@
 # ai
 
+## 2.2.26
+
+### Patch Changes
+
+- df1ad33: ai/vue: Add complex response parsing and StreamData support to useChat
+- 3ff8a56: Add `generateId` to use-chat params to allow overriding message ID generation
+
 ## 2.2.25
 
 ### Patch Changes
