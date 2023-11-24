@@ -35,11 +35,11 @@
   "homepage": "https://sdk.vercel.ai/docs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vercel/ai.git"
+    "url": "git+https://github.com/gsoc2/aisdk.git"
   },
   "license": "Apache License",
   "bugs": {
-    "url": "https://github.com/vercel/ai/issues"
+    "url": "https://github.com/gsoc2/aisdk/issues"
   },
   "keywords": [
     "ai"
