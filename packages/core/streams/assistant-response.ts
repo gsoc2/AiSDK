@@ -1,13 +1,21 @@
 import { formatStreamPart } from '../shared/stream-parts';
-import { AssistantMessage } from '../shared/types';
+import { AssistantMessage, DataMessage } from '../shared/types';
+
+type AssistantResponseSettings = {
+  threadId: string;
+  messageId: string;
+};
+
+type AssistantResponseCallback = (stream: {
+  threadId: string;
+  messageId: string;
+  sendMessage: (message: AssistantMessage) => void;
+  sendDataMessage: (message: DataMessage) => void;
+}) => Promise<void>;
 
 export function experimental_AssistantResponse(
-  { threadId, messageId }: { threadId: string; messageId: string },
-  process: (stream: {
-    threadId: string;
-    messageId: string;
-    sendMessage: (message: AssistantMessage) => void;
-  }) => Promise<void>,
+  { threadId, messageId }: AssistantResponseSettings,
+  process: AssistantResponseCallback,
 ): Response {
   const stream = new ReadableStream({
     async start(controller) {
@@ -16,6 +24,12 @@ export function experimental_AssistantResponse(
       const sendMessage = (message: AssistantMessage) => {
         controller.enqueue(
           textEncoder.encode(formatStreamPart('assistant_message', message)),
+        );
+      };
+
+      const sendDataMessage = (message: DataMessage) => {
+        controller.enqueue(
+          textEncoder.encode(formatStreamPart('data_message', message)),
         );
       };
 
@@ -40,6 +54,7 @@ export function experimental_AssistantResponse(
           threadId,
           messageId,
           sendMessage,
+          sendDataMessage,
         });
       } catch (error) {
         sendError((error as any).message ?? `${error}`);

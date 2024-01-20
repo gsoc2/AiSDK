@@ -3,25 +3,33 @@ import {
   StreamingTextResponse,
   experimental_StreamData,
 } from '.';
+import { cohereChunks } from '../tests/snapshots/cohere';
 import { readAllChunks } from '../tests/utils/mock-client';
-import { setup } from '../tests/utils/mock-service';
+import { DEFAULT_TEST_URL, createMockServer } from '../tests/utils/mock-server';
+
+const server = createMockServer([
+  {
+    url: DEFAULT_TEST_URL,
+    chunks: cohereChunks,
+    formatChunk: chunk => `${JSON.stringify(chunk)}\n`,
+  },
+]);
 
 describe('CohereStream', () => {
-  let server: ReturnType<typeof setup>;
   beforeAll(() => {
-    server = setup(3032);
+    server.listen();
   });
-  afterAll(async () => server.teardown());
+
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
 
   it('should be able to parse SSE and receive the streamed response', async () => {
-    const stream = CohereStream(
-      await fetch(server.api, {
-        headers: {
-          'x-mock-service': 'cohere',
-          'x-mock-type': 'chat',
-        },
-      }),
-    );
+    const stream = CohereStream(await fetch(DEFAULT_TEST_URL));
 
     const response = new StreamingTextResponse(stream);
 
@@ -38,20 +46,12 @@ describe('CohereStream', () => {
     it('should send text', async () => {
       const data = new experimental_StreamData();
 
-      const stream = CohereStream(
-        await fetch(server.api, {
-          headers: {
-            'x-mock-service': 'cohere',
-            'x-mock-type': 'chat',
-          },
-        }),
-        {
-          onFinal() {
-            data.close();
-          },
-          experimental_streamData: true,
+      const stream = CohereStream(await fetch(DEFAULT_TEST_URL), {
+        onFinal() {
+          data.close();
         },
-      );
+        experimental_streamData: true,
+      });
 
       const response = new StreamingTextResponse(stream, {}, data);
 
@@ -69,20 +69,12 @@ describe('CohereStream', () => {
 
       data.append({ t1: 'v1' });
 
-      const stream = CohereStream(
-        await fetch(server.api, {
-          headers: {
-            'x-mock-service': 'cohere',
-            'x-mock-type': 'chat',
-          },
-        }),
-        {
-          onFinal() {
-            data.close();
-          },
-          experimental_streamData: true,
+      const stream = CohereStream(await fetch(DEFAULT_TEST_URL), {
+        onFinal() {
+          data.close();
         },
-      );
+        experimental_streamData: true,
+      });
 
       const response = new StreamingTextResponse(stream, {}, data);
 

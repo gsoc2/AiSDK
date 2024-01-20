@@ -1,5 +1,55 @@
 # ai
 
+## 2.2.31
+
+### Patch Changes
+
+- 9b89c4d: react/use-assistant: Expose setInput
+- 75751c9: ai/react: Add experimental_onToolCall to useChat.
+
+## 2.2.30
+
+### Patch Changes
+
+- ac503e0: ai/solid: add chat request options to useChat
+- b78a73e: Add GoogleGenerativeAIStream for Gemini support
+- 5220336: ai/svelte: Add experimental_onToolCall to useChat.
+- ef99062: Add support for the Anthropic message API
+- 5220336: Add experimental_onToolCall to OpenAIStream.
+- ac503e0: ai/vue: add chat request options to useChat
+
+## 2.2.29
+
+### Patch Changes
+
+- 5a9ae2e: ai/prompt: add `experimental_buildOpenAIMessages` to validate and cast AI SDK messages to OpenAI messages
+
+## 2.2.28
+
+### Patch Changes
+
+- 07a679c: Add data message support to useAssistant & assistantResponse.
+- fbae595: ai/react: `api` functions are no longer used as a cache key in `useChat`
+
+## 2.2.27
+
+### Patch Changes
+
+- 0fd1205: ai/vue: Add complex response parsing and StreamData support to useCompletion
+- a7dc746: experimental_useAssistant: Expose extra fetch options
+- 3dcf01e: ai/react Add data support to useCompletion
+- 0c3b338: ai/svelte: Add complex response parsing and StreamData support to useCompletion
+- 8284777: ai/solid: Add complex response parsing and StreamData support to useCompletion
+
+## 2.2.26
+
+### Patch Changes
+
+- df1ad33: ai/vue: Add complex response parsing and StreamData support to useChat
+- 3ff8a56: Add `generateId` to use-chat params to allow overriding message ID generation
+- 6c2a49c: ai/react experimental_useAssistant() submit can be called without an event
+- 8b4f7d1: ai/react: Add complex response parsing and StreamData support to useCompletion
+
 ## 2.2.25
 
 ### Patch Changes
